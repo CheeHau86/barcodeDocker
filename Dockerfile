@@ -2,6 +2,7 @@ FROM python:3.6
 ENV PYTHONUNBUFFERED 1
 RUN apt-get update
 RUN apt-get install python-pip python-dev -y
+RUN apt-get install default-jre
 RUN pip install virtualenv
 RUN apt-get update
 RUN virtualenv myenv
