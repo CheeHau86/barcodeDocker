@@ -7,6 +7,9 @@ $ sudo apt-get update
 $ sudo apt-get install -y docker-ce
 $ sudo usermod -aG docker ${USER}
 $ sudo apt-get install git
+
+#log out and log in again for user permission to take effect
+
 $ git clone https://github.com/CheeHau86/barcodeDocker.git && cd barcodeDocker
 $ docker build -t barcode-docker:0.0.1 .
 $ docker run -p 8080:8080 barcode-docker:0.0.1
