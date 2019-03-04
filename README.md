@@ -1,4 +1,4 @@
-#this is for AWS EC@ ubuntu server 18.04
+#this is for AWS EC2 ubuntu server 18.04
 #connect to ubuntu server
 
 $ curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
