@@ -280,7 +280,7 @@ def CheckBarcode(barcodedata):
 
 	#Decode base64 to image
 	imgdata = base64.b64decode(image_base64)
-	filename = './barcodeDocker/converted_JSON.jpg'  # I assume you have a way of picking unique filenames
+	filename = 'converted_JSON.jpg'  # I assume you have a way of picking unique filenames
 	with open(filename, 'wb') as f:
 		f.write(imgdata)
 
@@ -306,17 +306,17 @@ def CheckBarcode(barcodedata):
 	boxFilter = np.ones( (9,9), np.float32) / 81.0
 	kernel1 = kernel1 - boxFilter
 	sharpened_bgr_1 = cv2.filter2D(image_bgr, -1, kernel1)
-	cv2.imwrite("../barcodeDetector/MyApp/detection_images/sharpened.jpg", sharpened_bgr_1) #./
+	cv2.imwrite("MyApp/detection_images/sharpened.jpg", sharpened_bgr_1) #./
 
 	# Sharpening of the Image
 	kernel = np.array([[-1,-1,-1], [-1,9,-1], [-1,-1,-1]])
 	sharpened_bgr_2 = cv2.filter2D(image_bgr, -1, kernel)
-	cv2.imwrite("../barcodeDetector/MyApp/detection_images/sharpened_bgr.jpg", sharpened_bgr_2) #./
+	cv2.imwrite("MyApp/detection_images/sharpened_bgr.jpg", sharpened_bgr_2) #./
 
 	# Sharpening of the Grayscale Image
 	global sharpened_gray
 	sharpened_gray = cv2.filter2D(image_gray, -1, kernel1)
-	cv2.imwrite("../barcodeDetector/MyApp/detection_images/sharpened_gray.jpg", sharpened_gray) #./
+	cv2.imwrite("MyApp/detection_images/sharpened_gray.jpg", sharpened_gray) #./
 
 	scale = 800.0 / image_gray.shape[1] #Resize image to 800 width while keeping the aspect ratio
 	image_gray_resized = cv2.resize(image_gray, (int(image_gray.shape[1] * scale), int(image_gray.shape[0] * scale)))
@@ -330,22 +330,22 @@ def CheckBarcode(barcodedata):
 
 	# Threshold the Image
 	image_gray_thres = cv2.adaptiveThreshold(image_gray_resized,255,cv2.ADAPTIVE_THRESH_GAUSSIAN_C,cv2.THRESH_BINARY,21,-4)
-	cv2.imwrite("../barcodeDetector/MyApp/detection_images/threshold.jpg",image_gray_thres) #./
+	cv2.imwrite("MyApp/detection_images/threshold.jpg",image_gray_thres) #./
 
 	# Perform Morphological Transformation again (Dilate and Erode) to connect the compenents
 	kernel = np.ones((1, 3), np.uint8)
 	image_gray_thres = cv2.morphologyEx(image_gray_thres, cv2.MORPH_DILATE, kernel, anchor=(2, 0), iterations=1)
 	image_gray_thres = cv2.morphologyEx(image_gray_thres, cv2.MORPH_DILATE, kernel, anchor=(1, 0), iterations=5)
 	image_gray_thres = cv2.morphologyEx(image_gray_thres, cv2.MORPH_CLOSE, kernel, anchor=(1, 0), iterations=3)
-	cv2.imwrite("../barcodeDetector/MyApp/detection_images/connected_components.jpg",image_gray_thres) #./
+	cv2.imwrite("MyApp/detection_images/connected_components.jpg",image_gray_thres) #./
 
 	# Filtering the small elements
 	kernel = np.ones((10, 15), np.uint8)
 	image_gray_thres = cv2.morphologyEx(image_gray_thres, cv2.MORPH_OPEN, kernel, iterations=1)
-	cv2.imwrite("../barcodeDetector/MyApp/detection_images/refined_connected_components.jpg",image_gray_thres) #./
+	cv2.imwrite("MyApp/detection_images/refined_connected_components.jpg",image_gray_thres) #./
 
 	# Find the contours for the remaining connected components
-	im2,contours, hierarchy = cv2.findContours(image_gray_thres, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_NONE)
+	contours, hierarchy = cv2.findContours(image_gray_thres, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_NONE)
 
 	unscale = 1.0 / scale
 	bounding_box = []
@@ -390,7 +390,7 @@ def CheckBarcode(barcodedata):
 			bounding_box.append(rect) #store these offset-ed bounding boxes
 			height.append(rect[3]) #store the height of these bounding boxes
 
-	cv2.imwrite("../barcodeDetector/MyApp/detection_images/segmented_barcode.jpg",image_bgr) #./
+	cv2.imwrite("MyApp/detection_images/segmented_barcode.jpg",image_bgr) #./
 	duration = time.time() - barcode_detection_start_time
 	print('-----[Segmented Barcode Detection Timing] {:.4f} seconds -----'.format(duration))
 
@@ -488,12 +488,12 @@ def CheckBarcode(barcodedata):
 		roi_barcode_thres = cv2.adaptiveThreshold(~rotated_roi_image,255,cv2.ADAPTIVE_THRESH_GAUSSIAN_C,cv2.THRESH_BINARY,7,-4)
 		roi_barcode_thres_copy = roi_barcode_thres.copy()
 		roi_barcode_thres = cv2.bitwise_not(roi_barcode_thres)
-		cv2.imwrite("../barcodeDetector/MyApp/detection_images/roi_barcode_threshold.jpg",roi_barcode_thres) #./
+		cv2.imwrite("MyApp/detection_images/roi_barcode_threshold.jpg",roi_barcode_thres) #./
 
 		# Morphological Transformation (Dilate and Erode)
 		kernel = cv2.getStructuringElement(cv2.MORPH_RECT, (1, 3))
 		closed = cv2.morphologyEx(roi_barcode_thres, cv2.MORPH_CLOSE, kernel)
-		cv2.imwrite("../barcodeDetector/MyApp/detection_images/barcode_filtered.jpg", closed) #./
+		cv2.imwrite("MyApp/detection_images/barcode_filtered.jpg", closed) #./
 
 		# Find the contours of the Barcode and its bounding boxes
 		im2, contours, hierarchy = cv2.findContours(closed, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
@@ -526,7 +526,7 @@ def CheckBarcode(barcodedata):
 		rect = sum_bounding_box(last_3_bounding_box)
 		stop_header_bounding_box.append(rect)
 		cv2.rectangle(rotated_roi_image_bgr_copy, (rect[0],rect[1]), (rect[0]+rect[2], rect[1]+rect[3]), [0,0,255], 1, 8, 0)
-		cv2.imwrite("../barcodeDetector/MyApp/detection_images/barcode_bb_image.jpg", rotated_roi_image_bgr_copy) #./
+		cv2.imwrite("MyApp/detection_images/barcode_bb_image.jpg", rotated_roi_image_bgr_copy) #./
 
 	# Second Round of Detection
 	if (len(detection_list)>0): #detection list is not empty yet
