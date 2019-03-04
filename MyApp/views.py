@@ -162,7 +162,7 @@ def find_contour(roi_image_barcode):
 	closed = cv2.morphologyEx(roi_barcode_thres, cv2.MORPH_CLOSE, kernel)
 	cv2.imwrite("MyApp/detection_images/barcode_filtered_2.jpg", closed) #./
 
-	im2, contours, hierarchy = cv2.findContours(closed, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
+	contours, hierarchy = cv2.findContours(closed, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
 
 	draw_image = roi_image_barcode.copy()
 	bounding_box_contour = []
