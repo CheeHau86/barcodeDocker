@@ -5,7 +5,6 @@ RUN apt-get install python-pip python-dev nginx git -y
 sudo apt-get install java-jre -y
 RUN pip install virtualenv
 RUN apt-get update
-RUN git clone https://github.com/CheeHau86/barcodeDocker.git && cd barcodeDetector
 RUN virtualenv myenv
 CMD ["source", "myenv/bin/activate"]
 RUN mkdir /code
