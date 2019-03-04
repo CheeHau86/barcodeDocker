@@ -280,7 +280,7 @@ def CheckBarcode(barcodedata):
 
 	#Decode base64 to image
 	imgdata = base64.b64decode(image_base64)
-	filename = '../barcodeDocker/converted_JSON.jpg'  # I assume you have a way of picking unique filenames
+	filename = './barcodeDocker/converted_JSON.jpg'  # I assume you have a way of picking unique filenames
 	with open(filename, 'wb') as f:
 		f.write(imgdata)
 
