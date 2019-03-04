@@ -1,0 +1,7 @@
+numpy
+opencv-contrib-python
+zxing
+imutils
+django 
+django-extensions
+djangorestframework
