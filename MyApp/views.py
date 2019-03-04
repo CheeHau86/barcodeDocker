@@ -263,8 +263,8 @@ def CheckBarcode(barcodedata):
 	# Read Config from JSON File
 	#test_image, output_filename = read_config("D:/001 TanCH/001 Files/001 Project/106 Radome/Airbus S'pore/codes/sae_barcode_detector_v1/DjangoBarcode/SampleProject/MyApp/config.txt") #try read from json image base64 string
 	#output filename
-	output_filename = "../barcodeDetector/data.txt"
-	input_filename = "../barcodeDetector/json_input.txt"
+	output_filename = "data.txt"
+	input_filename = "json_input.txt"
 
 	#print("Input File: ", str(sys.argv[1])) #"/home/haofucv-2/AIRBUS/EAST/Radome Labels/img_187.JPG"
 	#testimage = sys.argv[1]
@@ -496,7 +496,7 @@ def CheckBarcode(barcodedata):
 		cv2.imwrite("MyApp/detection_images/barcode_filtered.jpg", closed) #./
 
 		# Find the contours of the Barcode and its bounding boxes
-		im2, contours, hierarchy = cv2.findContours(closed, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
+		contours, hierarchy = cv2.findContours(closed, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
 		bounding_box_contour = []
 		refined_contour = []
 		for m in range (0, len(contours)):
